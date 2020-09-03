@@ -1,12 +1,83 @@
-import React from "react";
-import { observer } from "mobx-react";
-import { useStore } from "store/helpers";
+import React, { useState, useEffect } from "react";
+import { RouteComponentProps } from 'react-router';
+import io from "socket.io-client";
+import { Redirect } from 'react-router';
 
+import TextContainer from 'components/text-container/text-container';
+import Messages from 'components/messages/messages';
+// import InfoBar from 'components/InfoBar/InfoBar';
+// import Input from 'components/Input/Input';
+import { TUsers, TRoomData, TMessages, TMessage } from "types/users";
 
-const LoginPage: React.FC = observer(() => {
-  const store = useStore();
+import 'pages/room-page/room-page.css';
 
-  return <div>321</div>;
-});
+interface MatchParams {
+  name: string;
+  room: string;
+}
 
-export default LoginPage;
+interface IProps extends RouteComponentProps<MatchParams> {
+}
+
+const SOCKET_IO_URL = "http://localhost:3000";
+const socket = io(SOCKET_IO_URL);
+
+const Chat = ({ match }: IProps) => {
+  const [name, setName] = useState('');
+  const [room, setRoom] = useState('');
+  const [users, setUsers] = useState<TUsers>([]);
+  const [message, setMessage] = useState<TMessage>();
+  const [messages, setMessages] = useState<TMessages>([]);
+  const [flag, setFlag]=useState(0);
+
+  useEffect(() => {
+    const { name, room } = match.params;
+
+    setRoom(room);
+    setName(name)
+
+    socket.emit('join', { name, room }, (error: string) => {
+      if(error) { 
+        setFlag(1);
+        alert(error);
+      }
+    });
+  }, [match.params]); //, [SOCKET_IO_URL, match.params] <- второй параметр???
+  
+  useEffect(() => {
+    socket.on('message', (message: TMessage) => {
+      setMessages(messages => [ ...messages, message ]);
+    });
+    
+    socket.on("roomData", ({ users }: TRoomData) => {
+      setUsers(users);
+    });
+}, []);
+
+  // const sendMessage = (event) => {
+  //   event.preventDefault();
+
+  //   if(message) {
+  //     socket.emit('sendMessage', message, () => setMessage(''));
+  //   }
+  // }
+
+    if (flag){
+      return (
+        <Redirect to="/" />
+      )
+    }
+
+  return (
+    <div className="outerContainer">
+      <div className="container">
+          {/* <InfoBar room={room} /> */}
+          <Messages messages={messages} name={name} />
+          {/* <Input message={message} setMessage={setMessage} sendMessage={sendMessage} /> */}
+      </div>
+      <TextContainer users={users}/>
+    </div>
+  );
+}
+
+export default Chat;
