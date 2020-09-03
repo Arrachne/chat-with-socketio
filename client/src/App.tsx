@@ -8,7 +8,7 @@ const App = () => (
   <StoreProvider>
     <BrowserRouter>
       <Switch>
-        <Route path="/room" component={RoomPage}></Route>
+        <Route path="/chat" component={RoomPage}></Route>
         <Route path="/" component={LoginPage}></Route>
       </Switch>
     </BrowserRouter>

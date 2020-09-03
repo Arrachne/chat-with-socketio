@@ -7,13 +7,13 @@ import { TMessage } from "types/users";
 
 type Props = {
   message: TMessage;
-  name: string;
+  name: string | null | undefined;
 };
 
 const Message = ({ message: { text, user }, name }: Props) => {
   let isSentByCurrentUser = false;
 
-  const trimmedName = name.trim().toLowerCase();
+  const trimmedName = name ? name.trim().toLowerCase() : '';
 
   if (user === trimmedName) {
     isSentByCurrentUser = true;

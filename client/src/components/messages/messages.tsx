@@ -8,7 +8,7 @@ import "components/messages/messages.css";
 
 type Props = {
   messages: TMessages;
-  name: string;
+  name: string | null | undefined;
 };
 
 const Messages = ({ messages, name }: Props) => (

@@ -1,58 +1,60 @@
 import React, { useState, useEffect } from "react";
-import { RouteComponentProps } from 'react-router';
+import queryString from "query-string";
+import { RouteComponentProps } from "react-router";
 import io from "socket.io-client";
-import { Redirect } from 'react-router';
+import { Redirect } from "react-router";
 
-import TextContainer from 'components/text-container/text-container';
-import Messages from 'components/messages/messages';
+import TextContainer from "components/text-container/text-container";
+import Messages from "components/messages/messages";
 // import InfoBar from 'components/InfoBar/InfoBar';
 // import Input from 'components/Input/Input';
 import { TUsers, TRoomData, TMessages, TMessage } from "types/users";
 
-import 'pages/room-page/room-page.css';
+import "pages/room-page/room-page.css";
 
 interface MatchParams {
   name: string;
   room: string;
 }
 
-interface IProps extends RouteComponentProps<MatchParams> {
-}
+interface IProps extends RouteComponentProps<MatchParams> {}
 
 const SOCKET_IO_URL = "http://localhost:3000";
 const socket = io(SOCKET_IO_URL);
 
-const Chat = ({ match }: IProps) => {
-  const [name, setName] = useState('');
-  const [room, setRoom] = useState('');
+const Chat = ({ location }: RouteComponentProps) => {
+  const [name, setName] = useState<string | null | undefined>("");
+  const [room, setRoom] = useState<string | null | undefined>("");
   const [users, setUsers] = useState<TUsers>([]);
   const [message, setMessage] = useState<TMessage>();
   const [messages, setMessages] = useState<TMessages>([]);
-  const [flag, setFlag]=useState(0);
+  const [flag, setFlag] = useState(0);
 
   useEffect(() => {
-    const { name, room } = match.params;
+    const { name, room } = queryString.parse(location.search);
 
-    setRoom(room);
-    setName(name)
+    setName(Array.isArray(name) ? name[0] : name);
+    setRoom(Array.isArray(room) ? room[0] : room);
 
-    socket.emit('join', { name, room }, (error: string) => {
-      if(error) { 
+    console.log("joining: ", name, room);
+
+    socket.emit("join", { name, room }, (error: string) => {
+      if (error) {
         setFlag(1);
         alert(error);
       }
     });
-  }, [match.params]); //, [SOCKET_IO_URL, match.params] <- второй параметр???
-  
+  }, [SOCKET_IO_URL, location.search]); //, [SOCKET_IO_URL, match.params] <- второй параметр???
+
   useEffect(() => {
-    socket.on('message', (message: TMessage) => {
-      setMessages(messages => [ ...messages, message ]);
+    socket.on("message", (message: TMessage) => {
+      setMessages((messages) => [...messages, message]);
     });
-    
+
     socket.on("roomData", ({ users }: TRoomData) => {
       setUsers(users);
     });
-}, []);
+  }, []);
 
   // const sendMessage = (event) => {
   //   event.preventDefault();
@@ -62,22 +64,20 @@ const Chat = ({ match }: IProps) => {
   //   }
   // }
 
-    if (flag){
-      return (
-        <Redirect to="/" />
-      )
-    }
+  if (flag) {
+    return <Redirect to="/" />;
+  }
 
   return (
     <div className="outerContainer">
       <div className="container">
-          {/* <InfoBar room={room} /> */}
-          <Messages messages={messages} name={name} />
-          {/* <Input message={message} setMessage={setMessage} sendMessage={sendMessage} /> */}
+        {/* <InfoBar room={room} /> */}
+        <Messages messages={messages} name={name} />
+        {/* <Input message={message} setMessage={setMessage} sendMessage={sendMessage} /> */}
       </div>
-      <TextContainer users={users}/>
+      <TextContainer users={users} />
     </div>
   );
-}
+};
 
 export default Chat;

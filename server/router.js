@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
 
-router.get("/", function(req, res) {
-  res.redirect("http://localhost:3000/");
+router.get("/", (req, res) => {
+  res.send({ response: "Server is alive" }).status(200);
 });
 
 module.exports = router;
