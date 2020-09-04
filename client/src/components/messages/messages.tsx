@@ -15,7 +15,7 @@ const Messages = ({ messages, name }: Props) => (
   <ScrollToBottom className="messages">
     {messages.map((message: TMessage, i: number) => (
       <div key={i}>
-        <Message message={message} name={name} />
+        <Message message={message} name={name}/>
       </div>
     ))}
   </ScrollToBottom>

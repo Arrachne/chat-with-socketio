@@ -14,6 +14,7 @@ export type TRoomData = {
 export type TMessage = {
   text: string;
   user: string;
+  time: string;
 };
 
 export type TMessages = TMessage[];
