@@ -7,20 +7,19 @@ import 'components/text-container/text-container.css';
 
 type Props = {
   users: TUsers;
+  room: string;
 }
 
-const TextContainer = ({ users }: Props) => (
+const TextContainer = ({ users, room }: Props) => (
   <div className="textContainer">
     <div>
-      <h1>Welcome to Insta Meet <span role="img" aria-label="emoji">💬</span></h1>
-      <h2>Created by and for People <span role="img" aria-label="emoji">❤️</span></h2>
-      <h2>Try it out right now! <span role="img" aria-label="emoji">⬅️</span></h2>
+      <h1>{`Room: ${room}`}</h1>
     </div>
     {
       users
         ? (
           <div>
-            <h1>People currently chatting:</h1>
+            <h1>Users</h1>
             <div className="activeContainer">
               <h2>
                 {users.map(({name}) => (

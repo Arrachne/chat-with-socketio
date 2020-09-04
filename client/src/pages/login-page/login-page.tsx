@@ -24,7 +24,7 @@ const LoginPage: React.FC = observer(() => {
   return (
     <div className="joinOuterContainer">
       <div className="joinInnerContainer">
-        <h1 className="heading">Join</h1>
+        <h1 className="heading">Welcome to chat!</h1>
         <div>
           <input
             placeholder="Name"
@@ -46,7 +46,7 @@ const LoginPage: React.FC = observer(() => {
           to={`/chat?name=${name}&room=${room}`}
         >
           <button className={"button mt-20"} type="submit">
-            Sign In
+            Join
           </button>
         </Link>
       </div>

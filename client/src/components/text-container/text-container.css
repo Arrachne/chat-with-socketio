@@ -1,10 +1,10 @@
 .textContainer {
-  display: flex;
+  /* display: flex;
   flex-direction: column;
-  margin-left: 100px;
+  justify-content: space-between; */
+  margin-left: 20px;
   color: white;
-  height: 60%;
-  justify-content: space-between;
+  width: 30%;
 }
 
 .activeContainer {
