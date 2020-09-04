@@ -6,8 +6,8 @@ import { Redirect } from "react-router";
 
 import TextContainer from "components/text-container/text-container";
 import Messages from "components/messages/messages";
-// import InfoBar from 'components/InfoBar/InfoBar';
-// import Input from 'components/Input/Input';
+import InfoBar from 'components/infobar/infobar';
+import Input from 'components/input/input';
 import { TUsers, TRoomData, TMessages, TMessage } from "types/users";
 
 import "pages/room-page/room-page.css";
@@ -26,7 +26,7 @@ const Chat = ({ location }: RouteComponentProps) => {
   const [name, setName] = useState<string | null | undefined>("");
   const [room, setRoom] = useState<string | null | undefined>("");
   const [users, setUsers] = useState<TUsers>([]);
-  const [message, setMessage] = useState<TMessage>();
+  const [message, setMessage] = useState('');
   const [messages, setMessages] = useState<TMessages>([]);
   const [flag, setFlag] = useState(0);
 
@@ -56,13 +56,13 @@ const Chat = ({ location }: RouteComponentProps) => {
     });
   }, []);
 
-  // const sendMessage = (event) => {
-  //   event.preventDefault();
+  const sendMessage = (event: any) => {
+    event.preventDefault();
 
-  //   if(message) {
-  //     socket.emit('sendMessage', message, () => setMessage(''));
-  //   }
-  // }
+    if(message) {
+      socket.emit('sendMessage', message, () => setMessage(''));
+    }
+  }
 
   if (flag) {
     return <Redirect to="/" />;
@@ -71,9 +71,9 @@ const Chat = ({ location }: RouteComponentProps) => {
   return (
     <div className="outerContainer">
       <div className="container">
-        {/* <InfoBar room={room} /> */}
+        <InfoBar room={room} />
         <Messages messages={messages} name={name} />
-        {/* <Input message={message} setMessage={setMessage} sendMessage={sendMessage} /> */}
+        <Input message={message} setMessage={setMessage} sendMessage={sendMessage} />
       </div>
       <TextContainer users={users} />
     </div>
