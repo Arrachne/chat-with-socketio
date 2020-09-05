@@ -1,7 +1,5 @@
 import React from "react";
 
-import closeIcon from "icons/closeIcon.png";
-import onlineIcon from "icons/onlineIcon.png";
 import "components/infobar/infobar.css";
 
 type Props = {
@@ -11,8 +9,7 @@ type Props = {
 const InfoBar = ({ room }: Props) => (
   <div className="infoBar">
     <div className="leftInnerContainer">
-      <img className="onlineIcon" src={onlineIcon} alt="online" />
-      <h3>{room ? room : ""}</h3>
+      <h3>{`Room: ${room ? room : ""}`}</h3>
     </div>
     <a href="/" className="rightInnerContainer">
       Leave room

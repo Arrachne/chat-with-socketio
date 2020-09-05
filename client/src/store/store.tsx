@@ -1,14 +1,11 @@
 export function createStore() {
   return {
-    users: [{
-      userName: "Jane",
-      room: "JS",
+    curUsername: '',
+    rooms: ['JS', 'PHP'],
+
+    setUsername(name: string) {
+      this.curUsername = name;
     },
-    {
-      userName: "Mark",
-      room: "JS",
-    }],
-    rooms: ['JS', 'PHP']
   }
 }
 

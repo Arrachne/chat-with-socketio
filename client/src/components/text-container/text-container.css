@@ -4,7 +4,8 @@
   justify-content: space-between; */
   margin-left: 20px;
   color: white;
-  width: 30%;
+  max-width: 25%;
+  min-width: 250px;
 }
 
 .textContainer h3 {
@@ -18,8 +19,7 @@
 }
 
 .activeItem {
-  display: flex;
-  align-items: center;
+  word-wrap: break-word;
 }
 
 .activeContainer img {
@@ -28,12 +28,11 @@
 
 .usersList {
   padding-left: 10px;
-  font-size: 1.1em; 
+  font-size: 1.1em;
 }
 
-@media (min-width: 320px) and (max-width: 1200px) {
+@media (max-width: 700px) {
   .textContainer {
     display: none;
   }
 }
-

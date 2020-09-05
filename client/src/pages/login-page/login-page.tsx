@@ -11,15 +11,16 @@ const socket = io(SOCKET_IO_URL);
 
 const LoginPage: React.FC = observer(() => {
   const store = useStore();
+  // const { curUsername, setUsername } = store;
 
   const [name, setName] = useState("");
   const [room, setRoom] = useState("");
 
-  useEffect(() => {
-    socket.on("connect", () => {
-      socket.emit("salutations", "----------- Hello! ------------------");
-    });
-  });
+  // useEffect(() => {
+  //   socket.on("connect", () => {
+  //     socket.emit("salutations", "----------- Hello! ------------------");
+  //   });
+  // });
 
   return (
     <div className="joinOuterContainer">

@@ -11,18 +11,14 @@ import Input from "components/input/input";
 import { TUsers, TRoomData, TMessages, TMessage } from "types/users";
 
 import "pages/room-page/room-page.css";
-
-interface MatchParams {
-  name: string;
-  room: string;
-}
-
-interface IProps extends RouteComponentProps<MatchParams> {}
+import { useStore } from "store/helpers";
 
 const SOCKET_IO_URL = "http://localhost:3000";
 const socket = io(SOCKET_IO_URL);
 
 const Chat = ({ location }: RouteComponentProps) => {
+  const store = useStore();
+
   const [name, setName] = useState<string | null | undefined>("");
   const [room, setRoom] = useState<string | null | undefined>("");
   const [users, setUsers] = useState<TUsers>([]);
@@ -33,10 +29,10 @@ const Chat = ({ location }: RouteComponentProps) => {
   useEffect(() => {
     const { name, room } = queryString.parse(location.search);
 
+    console.log(location);
+
     setName(Array.isArray(name) ? name[0] : name);
     setRoom(Array.isArray(room) ? room[0] : room);
-
-    console.log("joining: ", name, room);
 
     socket.emit("join", { name, room }, (error: string) => {
       if (error) {
