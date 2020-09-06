@@ -4,6 +4,7 @@ import { RouteComponentProps } from "react-router";
 import io from "socket.io-client";
 import { Redirect } from "react-router";
 
+import { useStore } from "store/helpers";
 import TextContainer from "components/text-container/text-container";
 import Messages from "components/messages/messages";
 import InfoBar from "components/infobar/infobar";
@@ -11,36 +12,42 @@ import Input from "components/input/input";
 import { TUsers, TRoomData, TMessages, TMessage } from "types/users";
 
 import "pages/room-page/room-page.css";
-import { useStore } from "store/helpers";
 
 const SOCKET_IO_URL = "http://localhost:3000";
 const socket = io(SOCKET_IO_URL);
 
-const Chat = ({ location }: RouteComponentProps) => {
-  const store = useStore();
+type MatchParams = {
+  room: string;
+};
 
-  const [name, setName] = useState<string | null | undefined>("");
-  const [room, setRoom] = useState<string | null | undefined>("");
+const Chat = ({ match }: RouteComponentProps<MatchParams>) => {
+  const store = useStore();
+  const { name, setName } = store;
+
+  const { room } = match.params;
+
+  // const [name, setName] = useState<string | null | undefined>("");
+  // const [room, setRoom] = useState<string | null | undefined>("");
   const [users, setUsers] = useState<TUsers>([]);
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState<TMessages>([]);
-  const [flag, setFlag] = useState(0);
+  // const [flag, setFlag] = useState(0);
 
-  useEffect(() => {
-    const { name, room } = queryString.parse(location.search);
+  // useEffect(() => {
+  //   const { name, room } = queryString.parse(location.search);
 
-    console.log(location);
+  //   console.log(location);
 
-    setName(Array.isArray(name) ? name[0] : name);
-    setRoom(Array.isArray(room) ? room[0] : room);
+  //   setName(Array.isArray(name) ? name[0] : name);
+  //   setRoom(Array.isArray(room) ? room[0] : room);
 
-    socket.emit("join", { name, room }, (error: string) => {
-      if (error) {
-        setFlag(1);
-        alert(error);
-      }
-    });
-  }, [SOCKET_IO_URL, location.search]); //, [SOCKET_IO_URL, match.params] <- второй параметр???
+  //   socket.emit("join", { name, room }, (error: string) => {
+  //     if (error) {
+  //       setFlag(1);
+  //       alert(error);
+  //     }
+  //   });
+  // }, [SOCKET_IO_URL, location.search]); //, [SOCKET_IO_URL, match.params] <- второй параметр???
 
   useEffect(() => {
     socket.on("message", (message: TMessage) => {
@@ -60,14 +67,14 @@ const Chat = ({ location }: RouteComponentProps) => {
     }
   };
 
-  if (flag) {
-    return <Redirect to="/" />;
-  }
+  // if (flag) {
+  //   return <Redirect to="/" />;
+  // }
 
   return (
     <div className="layout">
       <div className="chat-container">
-        <TextContainer users={users} room={room ? room : ''}/>
+        <TextContainer users={users} room={room ? room : ""} />
         <div className="container">
           <InfoBar room={room} />
           <Messages messages={messages} name={name} />

@@ -1,12 +1,16 @@
+import Cookies from "universal-cookie";
+
 export function createStore() {
   return {
-    curUsername: '',
-    rooms: ['JS', 'PHP'],
+    name: "",
+    cookies: new Cookies(),
 
-    setUsername(name: string) {
-      this.curUsername = name;
+    rooms: ["JS", "PHP"],
+
+    setName(name: string) {
+      this.name = name;
     },
-  }
+  };
 }
 
 export type TStore = ReturnType<typeof createStore>;

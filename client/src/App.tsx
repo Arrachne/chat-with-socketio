@@ -1,16 +1,12 @@
 import React from "react";
-import { BrowserRouter, Switch, Route } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
 import { StoreProvider } from "store/helpers";
-import LoginPage from "pages/login-page/login-page";
-import RoomPage from "pages/room-page/room-page";
+import AppRouter from "app-router";
 
 const App = () => (
   <StoreProvider>
     <BrowserRouter>
-      <Switch>
-        <Route path="/chat" component={RoomPage}></Route>
-        <Route path="/" component={LoginPage}></Route>
-      </Switch>
+      <AppRouter />
     </BrowserRouter>
   </StoreProvider>
 );
