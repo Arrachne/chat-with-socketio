@@ -7,14 +7,7 @@ import { useStore } from "store/helpers";
 const AppRouter = () => {
   const store = useStore();
   const { cookies } = store;
-
-  //на unmount
-  useEffect(() => {
-    console.log(cookies.get("name"));
-    // cookies.remove("name")
-    return () => cookies.remove("name");
-  }, []);
-
+  
   return cookies.get("name") ? (
     <Switch>
       <Route path="/chat/:room" component={RoomPage}></Route>

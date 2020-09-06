@@ -52,6 +52,12 @@ const LoginPage = observer(({ match }: RouteComponentProps<MatchParams>) => {
     });
   };
 
+  const onLogoutClick = () => {
+    cookies.remove("name");
+    setName("");
+    setLocalName("");
+  };
+
   // if (flag) {
   //   return <Redirect to="/" />;
   // }
@@ -93,6 +99,11 @@ const LoginPage = observer(({ match }: RouteComponentProps<MatchParams>) => {
             Join
           </button>
         </Link>
+        {cookies.get("name") && (
+          <div className={"logout mt-20"} onClick={onLogoutClick}>
+            Log out
+          </div>
+        )}
       </div>
     </div>
   );

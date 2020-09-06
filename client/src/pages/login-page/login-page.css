@@ -15,15 +15,19 @@ body {
 
 .joinOuterContainer {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   text-align: center;
   height: 100vh;
   align-items: center;
   background-color: #1a1a1d;
+  position: relative;
 }
 
 .joinInnerContainer {
   width: 30%;
+  position: absolute;
+  top: 30%;
 }
 
 .joinInput {
@@ -53,6 +57,15 @@ body {
 
 .mt-20 {
   margin-top: 20px;
+}
+
+.logout {
+  cursor: pointer;
+  color: #fff;
+  text-transform: uppercase;
+  text-decoration: underline;
+  width: 50%;
+  display: inline-block;
 }
 
 @media (min-width: 481px) and (max-width: 991px) {
