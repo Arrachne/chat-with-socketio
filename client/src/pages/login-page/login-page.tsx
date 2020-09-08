@@ -1,15 +1,10 @@
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect } from "react";
 import { RouteComponentProps } from "react-router";
 import { observer } from "mobx-react";
 import { useStore } from "store/helpers";
-import io from "socket.io-client";
 import Cookies from "universal-cookie";
 
 import "pages/login-page/login-page.css";
-
-// const SOCKET_IO_URL = "http://localhost:3000";
-// const socket = io(SOCKET_IO_URL);
 
 const cookies = new Cookies();
 
@@ -19,42 +14,33 @@ type MatchParams = {
 
 const LoginPage = observer(({ match }: RouteComponentProps<MatchParams>) => {
   const store = useStore();
-  console.log('login store',store)
 
-  const { name, setName, roomS, setRoom } = store;
+  const { name, setName, storageRoom, setStorageRoom } = store;
 
   const { room } = match.params;
 
   const cookieName = cookies.get('name');
-   
-
-  // const [localName, setLocalName] = useState(cookies.get("name"));
-  // const [roomName, setRoomName] = useState(roomS); 
-  // const [localName, setLocalName] = useState('');
-  // const [roomName, setRoomName] = useState('');
 
   useEffect(() => {
     if (room) {
-      setRoom(room)
+      setStorageRoom(room)
     } 
-  }, [room, setRoom]);
+  }, [room, setStorageRoom]);
 
   useEffect(() => {
     if (cookieName) {
       setName(cookieName)
     } 
-    console.log('useEffect name',name)
-  }, [cookieName, name, setName]);
+  }, [cookieName, setName]);
 
   const onJoinClick = (event: any) => {
-    if (!name || !roomS) {
+    if (!name || !storageRoom) {
       event.preventDefault();
       return;
     }
 
     if (name) {
       cookies.set("name", name, { path: "/" });
-      // setName(localName);
     }
 
     console.log('cookies',cookies.get("name"))
@@ -64,14 +50,7 @@ const LoginPage = observer(({ match }: RouteComponentProps<MatchParams>) => {
   const onLogoutClick = () => {
     cookies.remove("name");
     setName("");
-    // setLocalName("");
   };
-
-  // useEffect(() => {
-  //   socket.on("connect", () => {
-  //     socket.emit("salutations", "----------- Hello! ------------------");
-  //   });
-  // });
 
   return (
     <div className="joinOuterContainer">
@@ -91,19 +70,18 @@ const LoginPage = observer(({ match }: RouteComponentProps<MatchParams>) => {
             placeholder="Room"
             className="joinInput mt-20"
             type="text"
-            onChange={(event) => setRoom(event.target.value)}
-            value={roomS}
+            onChange={(event) => setStorageRoom(event.target.value)}
+            value={storageRoom}
           />
         </div>
-        <Link
+        <a
           onClick={onJoinClick}
-          // to={`/chat?name=${name}&room=${room}`}
-          to={`/chat/${roomS}`}
+          href={`/chat/${storageRoom}`}
         >
           <button className={"button mt-20"} type="submit">
             Join
           </button>
-        </Link>
+        </a>
         {cookies.get("name") && (
           <div className={"logout mt-20"} onClick={onLogoutClick}>
             Log out

@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
-import queryString from "query-string";
 import { RouteComponentProps } from "react-router";
 import io from "socket.io-client";
 import { Redirect } from "react-router";
+import Cookies from "universal-cookie";
+import { observer } from "mobx-react";
 
 import { useStore } from "store/helpers";
 import TextContainer from "components/text-container/text-container";
@@ -12,11 +13,7 @@ import Input from "components/input/input";
 import { TUsers, TRoomData, TMessages, TMessage } from "types/users";
 
 import "pages/room-page/room-page.css";
-import { observer } from "mobx-react";
-import Cookies from "universal-cookie";
 
-// const SOCKET_IO_URL = "http://localhost:3000";
-// const socket = io(SOCKET_IO_URL);
 const socket = io();
 
 type MatchParams = {
@@ -25,57 +22,33 @@ type MatchParams = {
 
 const cookies = new Cookies();
 
-
 const Chat = observer(({ match }: RouteComponentProps<MatchParams>) => {
+  const { room } = match.params;
+
   const store = useStore();
-  console.log('room store',store)
   const { name, setName } = store;
 
-  const cookieName = cookies.get('name');
-
-
-  useEffect(() => {
-    // debugger
-    if (cookieName) {
-      setName(cookieName)
-    } 
-    // console.log('useEffect name',name)
-  }, [cookieName, setName]);
-
-  // const [name, setName] = useState<string | null | undefined>("");
-  // const [room, setRoom] = useState<string | null | undefined>("");
   const [users, setUsers] = useState<TUsers>([]);
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState<TMessages>([]);
   const [flag, setFlag] = useState(0);
 
-  const { room } = match.params;
-
-  // useEffect(() => {
-  //   const { name, room } = queryString.parse(location.search);
-
-  //   console.log(location);
-
-  //   setName(Array.isArray(name) ? name[0] : name);
-  // setRoom(Array.isArray(room) ? room[0] : room);
-
-  //   socket.emit("join", { name, room }, (error: string) => {
-  //     if (error) {
-  //       setFlag(1);
-  //       alert(error);
-  //     }
-  //   });
-  // }, [SOCKET_IO_URL, location.search]); //, [SOCKET_IO_URL, match.params] <- второй параметр???
+  const cookieName = cookies.get('name');
 
   useEffect(() => {
-    // debugger
+    if (cookieName) {
+      setName(cookieName)
+    } 
+  }, [cookieName, setName]);  
+
+  useEffect(() => {
     socket.emit("join", { name, room }, (error: string) => {
       if (error) {
         setFlag(1);
         alert(error);
       }
     });
-  }, [name, room]); //, [SOCKET_IO_URL, match.params] <- второй параметр???
+  }, [name, room]);
 
   useEffect(() => {
     socket.on("message", (message: TMessage) => {
