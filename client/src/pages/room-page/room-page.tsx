@@ -12,6 +12,8 @@ import Input from "components/input/input";
 import { TUsers, TRoomData, TMessages, TMessage } from "types/users";
 
 import "pages/room-page/room-page.css";
+import { observer } from "mobx-react";
+import Cookies from "universal-cookie";
 
 const SOCKET_IO_URL = "http://localhost:3000";
 const socket = io(SOCKET_IO_URL);
@@ -20,18 +22,33 @@ type MatchParams = {
   room: string;
 };
 
-const Chat = ({ match }: RouteComponentProps<MatchParams>) => {
+const cookies = new Cookies();
+
+
+const Chat = observer(({ match }: RouteComponentProps<MatchParams>) => {
   const store = useStore();
+  console.log('room store',store)
   const { name, setName } = store;
 
-  const { room } = match.params;
+  const cookieName = cookies.get('name');
+
+
+  useEffect(() => {
+    debugger
+    if (cookieName) {
+      setName(cookieName)
+    } 
+    // console.log('useEffect name',name)
+  }, [cookieName, setName]);
 
   // const [name, setName] = useState<string | null | undefined>("");
   // const [room, setRoom] = useState<string | null | undefined>("");
   const [users, setUsers] = useState<TUsers>([]);
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState<TMessages>([]);
-  // const [flag, setFlag] = useState(0);
+  const [flag, setFlag] = useState(0);
+
+  const { room } = match.params;
 
   // useEffect(() => {
   //   const { name, room } = queryString.parse(location.search);
@@ -39,7 +56,7 @@ const Chat = ({ match }: RouteComponentProps<MatchParams>) => {
   //   console.log(location);
 
   //   setName(Array.isArray(name) ? name[0] : name);
-  //   setRoom(Array.isArray(room) ? room[0] : room);
+  // setRoom(Array.isArray(room) ? room[0] : room);
 
   //   socket.emit("join", { name, room }, (error: string) => {
   //     if (error) {
@@ -48,6 +65,16 @@ const Chat = ({ match }: RouteComponentProps<MatchParams>) => {
   //     }
   //   });
   // }, [SOCKET_IO_URL, location.search]); //, [SOCKET_IO_URL, match.params] <- второй параметр???
+
+  useEffect(() => {
+    debugger
+    socket.emit("join", { name, room }, (error: string) => {
+      if (error) {
+        setFlag(1);
+        alert(error);
+      }
+    });
+  }, [name, room]); //, [SOCKET_IO_URL, match.params] <- второй параметр???
 
   useEffect(() => {
     socket.on("message", (message: TMessage) => {
@@ -67,9 +94,9 @@ const Chat = ({ match }: RouteComponentProps<MatchParams>) => {
     }
   };
 
-  // if (flag) {
-  //   return <Redirect to="/" />;
-  // }
+  if (flag) {
+    return <Redirect to="/" />;
+  }
 
   return (
     <div className="layout">
@@ -87,6 +114,6 @@ const Chat = ({ match }: RouteComponentProps<MatchParams>) => {
       </div>
     </div>
   );
-};
+});
 
 export default Chat;

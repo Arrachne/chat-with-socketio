@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Redirect, RouteComponentProps } from "react-router";
+import { RouteComponentProps } from "react-router";
 import { observer } from "mobx-react";
 import { useStore } from "store/helpers";
 import io from "socket.io-client";
 
 import "pages/login-page/login-page.css";
+import Cookies from "universal-cookie";
 
 const SOCKET_IO_URL = "http://localhost:3000";
 const socket = io(SOCKET_IO_URL);
+
+const cookies = new Cookies();
 
 type MatchParams = {
   room: string;
@@ -16,51 +19,53 @@ type MatchParams = {
 
 const LoginPage = observer(({ match }: RouteComponentProps<MatchParams>) => {
   const store = useStore();
-  // const { curUsername, setUsername } = store;
-  const { name, setName, cookies } = store;
+  console.log('login store',store)
 
-  // if (cookies.get("name")) {
-  //   setName(cookies.get("name"));
-  // }
+  const { name, setName, roomS, setRoom } = store;
 
   const { room } = match.params;
 
-  const [localName, setLocalName] = useState(cookies.get("name"));
-  const [roomName, setRoom] = useState(room);
-  const [flag, setFlag] = useState(0);
+  const cookieName = cookies.get('name');
+   
+
+  // const [localName, setLocalName] = useState(cookies.get("name"));
+  // const [roomName, setRoomName] = useState(roomS); 
+  // const [localName, setLocalName] = useState('');
+  // const [roomName, setRoomName] = useState('');
 
   useEffect(() => {
-    // setRoom(room)
-  });
+    if (room) {
+      setRoom(room)
+    } 
+  }, [room, setRoom]);
+
+  useEffect(() => {
+    if (cookieName) {
+      setName(cookieName)
+    } 
+    console.log('useEffect name',name)
+  }, [cookieName, name, setName]);
 
   const onJoinClick = (event: any) => {
-    if (!localName || !roomName) {
+    if (!name || !roomS) {
       event.preventDefault();
       return;
     }
 
-    if (localName) {
-      cookies.set("name", localName, { path: "/" });
-      setName(localName);
+    if (name) {
+      cookies.set("name", name, { path: "/" });
+      // setName(localName);
     }
 
-    socket.emit("join", { localName, roomName }, (error: string) => {
-      if (error) {
-        setFlag(1);
-        alert(error);
-      }
-    });
+    console.log('cookies',cookies.get("name"))
+    console.log('storage',name)
   };
 
   const onLogoutClick = () => {
     cookies.remove("name");
     setName("");
-    setLocalName("");
+    // setLocalName("");
   };
-
-  // if (flag) {
-  //   return <Redirect to="/" />;
-  // }
 
   // useEffect(() => {
   //   socket.on("connect", () => {
@@ -77,8 +82,8 @@ const LoginPage = observer(({ match }: RouteComponentProps<MatchParams>) => {
             placeholder="Name"
             className="joinInput"
             type="text"
-            onChange={(event) => setLocalName(event.target.value)}
-            value={localName}
+            onChange={(event) => setName(event.target.value)}
+            value={name}
           />
         </div>
         <div>
@@ -87,13 +92,13 @@ const LoginPage = observer(({ match }: RouteComponentProps<MatchParams>) => {
             className="joinInput mt-20"
             type="text"
             onChange={(event) => setRoom(event.target.value)}
-            value={roomName}
+            value={roomS}
           />
         </div>
         <Link
           onClick={onJoinClick}
           // to={`/chat?name=${name}&room=${room}`}
-          to={`/chat/${roomName}`}
+          to={`/chat/${roomS}`}
         >
           <button className={"button mt-20"} type="submit">
             Join

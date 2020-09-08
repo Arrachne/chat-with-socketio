@@ -15,7 +15,9 @@ const io = socketio(server);
 const port = process.env.PORT || 5000;
 const adminName = 'admin';
 
-app.use(express.static(path.join(__dirname, '..', "client", "build")));
+app.use(express.static(path.join(__dirname, "client")));
+app.use(express.static(path.join(__dirname, "client", "build")));
+
 app.use(
   cors({
     credentials: true,
@@ -57,6 +59,10 @@ io.on('connect', (socket) => {
       io.to(user.room).emit('roomData', { room: user.room, users: getUsersInRoom(user.room) });
     }
   })
+});
+
+app.get('/*', (req, res) => {
+  res.sendFile(path.join(__dirname, "client", 'build', 'index.html'));
 });
 
 server.listen(port, () => console.log(`Listening on port ${port}`));
