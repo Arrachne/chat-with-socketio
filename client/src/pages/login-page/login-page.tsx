@@ -4,12 +4,12 @@ import { RouteComponentProps } from "react-router";
 import { observer } from "mobx-react";
 import { useStore } from "store/helpers";
 import io from "socket.io-client";
-
-import "pages/login-page/login-page.css";
 import Cookies from "universal-cookie";
 
-const SOCKET_IO_URL = "http://localhost:3000";
-const socket = io(SOCKET_IO_URL);
+import "pages/login-page/login-page.css";
+
+// const SOCKET_IO_URL = "http://localhost:3000";
+// const socket = io(SOCKET_IO_URL);
 
 const cookies = new Cookies();
 

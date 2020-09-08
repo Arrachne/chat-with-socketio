@@ -15,8 +15,9 @@ import "pages/room-page/room-page.css";
 import { observer } from "mobx-react";
 import Cookies from "universal-cookie";
 
-const SOCKET_IO_URL = "http://localhost:3000";
-const socket = io(SOCKET_IO_URL);
+// const SOCKET_IO_URL = "http://localhost:3000";
+// const socket = io(SOCKET_IO_URL);
+const socket = io();
 
 type MatchParams = {
   room: string;
@@ -34,7 +35,7 @@ const Chat = observer(({ match }: RouteComponentProps<MatchParams>) => {
 
 
   useEffect(() => {
-    debugger
+    // debugger
     if (cookieName) {
       setName(cookieName)
     } 
@@ -67,7 +68,7 @@ const Chat = observer(({ match }: RouteComponentProps<MatchParams>) => {
   // }, [SOCKET_IO_URL, location.search]); //, [SOCKET_IO_URL, match.params] <- второй параметр???
 
   useEffect(() => {
-    debugger
+    // debugger
     socket.emit("join", { name, room }, (error: string) => {
       if (error) {
         setFlag(1);
