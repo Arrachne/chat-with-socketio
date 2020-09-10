@@ -3,8 +3,8 @@ import "components/input/input.css";
 
 type Props = {
   message: string;
-  setMessage: any;
-  sendMessage: any;
+  setMessage: (message: string) => void;
+  sendMessage: (event: any) => void;
 };
 
 const Input = ({ message, setMessage, sendMessage }: Props) => (

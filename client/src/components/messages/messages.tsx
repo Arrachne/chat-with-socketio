@@ -2,7 +2,7 @@ import React from "react";
 // @ts-ignore
 import ScrollToBottom from "react-scroll-to-bottom";
 import Message from "components/message/message";
-import { TMessage, TMessages } from "types/users";
+import { TMessage, TMessages } from "types/types";
 
 import "components/messages/messages.css";
 

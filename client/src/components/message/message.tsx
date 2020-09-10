@@ -3,7 +3,7 @@ import React from "react";
 import ReactEmoji from "react-emoji";
 
 import "components/message/message.css";
-import { TMessage } from "types/users";
+import { TMessage } from "types/types";
 
 type Props = {
   message: TMessage;

@@ -8,33 +8,41 @@ import "pages/login-page/login-page.css";
 
 const cookies = new Cookies();
 
+type OwnProps = {
+  isAuthed: boolean;
+};
+
 type MatchParams = {
   room: string;
 };
 
-const LoginPage = observer(({ match }: RouteComponentProps<MatchParams>) => {
+interface IProps extends RouteComponentProps<MatchParams>, OwnProps {}
+
+const LoginPage = observer(({ match, isAuthed }: IProps) => {
   const store = useStore();
 
-  const { name, setName, storageRoom, setStorageRoom } = store;
+  const { name, setName, storeRoom, setStoreRoom } = store;
 
   const { room } = match.params;
 
-  const cookieName = cookies.get('name');
+  const cookieName = cookies.get("name");
+
+  console.log('room, ', room)
 
   useEffect(() => {
     if (room) {
-      setStorageRoom(room)
-    } 
-  }, [room, setStorageRoom]);
+      setStoreRoom(room);
+    }
+  }, [room, setStoreRoom]);
 
   useEffect(() => {
     if (cookieName) {
-      setName(cookieName)
-    } 
+      setName(cookieName);
+    }
   }, [cookieName, setName]);
 
   const onJoinClick = (event: any) => {
-    if (!name || !storageRoom) {
+    if (!name || !storeRoom) {
       event.preventDefault();
       return;
     }
@@ -43,8 +51,8 @@ const LoginPage = observer(({ match }: RouteComponentProps<MatchParams>) => {
       cookies.set("name", name, { path: "/" });
     }
 
-    console.log('cookies',cookies.get("name"))
-    console.log('storage',name)
+    console.log("cookies", cookies.get("name"));
+    console.log("storage", name);
   };
 
   const onLogoutClick = () => {
@@ -53,40 +61,42 @@ const LoginPage = observer(({ match }: RouteComponentProps<MatchParams>) => {
   };
 
   return (
-    <div className="joinOuterContainer">
-      <div className="joinInnerContainer">
-        <h1 className="heading">Welcome to chat!</h1>
-        <div>
-          <input
-            placeholder="Name"
-            className="joinInput"
-            type="text"
-            onChange={(event) => setName(event.target.value)}
-            value={name}
-          />
-        </div>
-        <div>
-          <input
-            placeholder="Room"
-            className="joinInput mt-20"
-            type="text"
-            onChange={(event) => setStorageRoom(event.target.value)}
-            value={storageRoom}
-          />
-        </div>
-        <a
-          onClick={onJoinClick}
-          href={`/chat/${storageRoom}`}
-        >
-          <button className={"button mt-20"} type="submit">
-            Join
-          </button>
-        </a>
-        {cookies.get("name") && (
-          <div className={"logout mt-20"} onClick={onLogoutClick}>
-            Log out
+    <div className="login__layout">
+      <div className="joinOuterContainer">
+        <div className="joinInnerContainer">
+          <h1 className="heading">Welcome to chat!</h1>
+          {isAuthed === false && (
+            <div className="no-auth-warn">{`Please log in to join room "${room}"`}</div>
+          )}
+          <div>
+            <input
+              placeholder="Name"
+              className="joinInput"
+              type="text"
+              onChange={(event) => setName(event.target.value)}
+              value={name}
+            />
           </div>
-        )}
+          <div>
+            <input
+              placeholder="Room"
+              className="joinInput mt-20"
+              type="text"
+              onChange={(event) => setStoreRoom(event.target.value)}
+              value={storeRoom}
+            />
+          </div>
+          <a onClick={onJoinClick} href={`/chat/${storeRoom}`}>
+            <button className={"button mt-20"} type="submit">
+              Join
+            </button>
+          </a>
+          {cookies.get("name") && (
+            <div className={"logout mt-20"} onClick={onLogoutClick}>
+              Log out
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

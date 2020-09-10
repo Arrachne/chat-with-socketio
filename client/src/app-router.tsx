@@ -18,16 +18,23 @@ const AppRouter = () => {
     }
   }, [cookieName, setIsCookie]);
 
+  // if user not logged in, show login page
   return (
     <BrowserRouter>
       {isCookie ? (
         <Switch>
           <Route path="/chat/:room" component={RoomPage}></Route>
-          <Route path="/" component={LoginPage}></Route>
+          <Route
+            path="/"
+            render={(props) => <LoginPage {...props} isAuthed={true} />}
+          ></Route>
         </Switch>
       ) : (
         <Switch>
-          <Route path="/chat/:room" component={LoginPage}></Route>
+          <Route
+            path="/chat/:room"
+            render={(props) => <LoginPage {...props} isAuthed={false} />}
+          ></Route>
           <Route path="/" component={LoginPage}></Route>
         </Switch>
       )}

@@ -1,5 +1,5 @@
 import React from "react";
-import { TUsers } from "types/users";
+import { TUsers } from "types/types";
 
 import "components/text-container/text-container.css";
 

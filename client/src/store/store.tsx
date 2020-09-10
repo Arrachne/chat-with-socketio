@@ -3,14 +3,14 @@ import Cookies from "universal-cookie";
 export function createStore() {
   return {
     name: '',
-    storageRoom: '',
+    storeRoom: '',
 
     setName(name: string) {
       this.name = name;
     },
 
-    setStorageRoom(room: string) {
-      this.storageRoom = room;
+    setStoreRoom(room: string) {
+      this.storeRoom = room;
     },
   };
 }

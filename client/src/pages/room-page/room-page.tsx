@@ -4,13 +4,12 @@ import io from "socket.io-client";
 import { Redirect } from "react-router";
 import Cookies from "universal-cookie";
 import { observer } from "mobx-react";
-
 import { useStore } from "store/helpers";
 import TextContainer from "components/text-container/text-container";
 import Messages from "components/messages/messages";
 import InfoBar from "components/infobar/infobar";
 import Input from "components/input/input";
-import { TUsers, TRoomData, TMessages, TMessage } from "types/users";
+import { TUsers, TRoomData, TMessages, TMessage } from "types/types";
 
 import "pages/room-page/room-page.css";
 
