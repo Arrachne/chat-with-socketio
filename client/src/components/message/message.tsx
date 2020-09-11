@@ -10,7 +10,7 @@ type Props = {
   name: string | null | undefined;
 };
 
-const Message = ({ message: { text, user, time }, name }: Props) => {
+export const Message = ({ message: { text, user, time }, name }: Props) => {
   let isSentByCurrentUser = false;
 
   const trimmedName = name ? name.trim() : "";
@@ -36,5 +36,3 @@ const Message = ({ message: { text, user, time }, name }: Props) => {
     </div>
   );
 };
-
-export default Message;

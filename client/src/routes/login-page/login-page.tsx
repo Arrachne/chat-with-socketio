@@ -4,7 +4,7 @@ import { observer } from "mobx-react";
 import { useStore } from "store/helpers";
 import Cookies from "universal-cookie";
 
-import "pages/login-page/login-page.css";
+import "routes/login-page/login-page.css";
 
 const cookies = new Cookies();
 
@@ -18,7 +18,7 @@ type MatchParams = {
 
 interface IProps extends RouteComponentProps<MatchParams>, OwnProps {}
 
-const LoginPage = observer(({ match, isAuthed }: IProps) => {
+export const LoginPage = observer(({ match, isAuthed }: IProps) => {
   const store = useStore();
 
   const { name, setName, storeRoom, setStoreRoom } = store;
@@ -101,5 +101,3 @@ const LoginPage = observer(({ match, isAuthed }: IProps) => {
     </div>
   );
 });
-
-export default LoginPage;

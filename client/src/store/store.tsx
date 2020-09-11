@@ -1,5 +1,3 @@
-import Cookies from "universal-cookie";
-
 export function createStore() {
   return {
     name: '',

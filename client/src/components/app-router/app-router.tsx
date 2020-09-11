@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Switch, Route, BrowserRouter } from "react-router-dom";
-import LoginPage from "pages/login-page/login-page";
-import RoomPage from "pages/room-page/room-page";
+import { LoginPage } from "routes/login-page";
+import { RoomPage } from "routes/room-page";
 import Cookies from "universal-cookie";
 
 const cookies = new Cookies();
 
-const AppRouter = () => {
+export function AppRouter() {
   const cookieName = cookies.get("name");
   const [isCookie, setIsCookie] = useState<boolean>();
 
@@ -40,6 +40,4 @@ const AppRouter = () => {
       )}
     </BrowserRouter>
   );
-};
-
-export default AppRouter;
+}

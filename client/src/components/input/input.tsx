@@ -7,7 +7,7 @@ type Props = {
   sendMessage: (event: any) => void;
 };
 
-const Input = ({ message, setMessage, sendMessage }: Props) => (
+export const Input = ({ message, setMessage, sendMessage }: Props) => (
   <form className="form">
     <div className="input-container">
       <input className="input"
@@ -24,5 +24,3 @@ const Input = ({ message, setMessage, sendMessage }: Props) => (
     </button>
   </form>
 );
-
-export default Input;

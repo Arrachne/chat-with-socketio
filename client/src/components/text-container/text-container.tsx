@@ -8,7 +8,7 @@ type Props = {
   room: string;
 };
 
-const TextContainer = ({ users, room }: Props) => (
+export const TextContainer = ({ users, room }: Props) => (
   <div className="textContainer">
     <h3>Users in room</h3>
     {users ? (
@@ -24,5 +24,3 @@ const TextContainer = ({ users, room }: Props) => (
     ) : null}
   </div>
 );
-
-export default TextContainer;

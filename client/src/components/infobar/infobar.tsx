@@ -6,7 +6,7 @@ type Props = {
   room: string | null | undefined;
 };
 
-const InfoBar = ({ room }: Props) => (
+export const InfoBar = ({ room }: Props) => (
   <div className="infoBar">
     <div className="leftInnerContainer">
       <h3>{`Room: ${room ? room : ""}`}</h3>
@@ -16,5 +16,3 @@ const InfoBar = ({ room }: Props) => (
     </a>
   </div>
 );
-
-export default InfoBar;
