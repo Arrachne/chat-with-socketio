@@ -14,7 +14,6 @@ export const Message = ({ message: { text, user, time }, name }: Props) => {
   let isSentByCurrentUser = false;
 
   const trimmedName = name ? name.trim() : "";
-  console.log('user', user)
 
   if (user === trimmedName) {
     isSentByCurrentUser = true;

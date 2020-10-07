@@ -27,8 +27,6 @@ export const LoginPage = observer(({ match, isAuthed }: IProps) => {
 
   const cookieName = cookies.get("name");
 
-  console.log('room, ', room)
-
   useEffect(() => {
     if (room) {
       setStoreRoom(room);
@@ -50,9 +48,6 @@ export const LoginPage = observer(({ match, isAuthed }: IProps) => {
     if (name) {
       cookies.set("name", name, { path: "/" });
     }
-
-    console.log("cookies", cookies.get("name"));
-    console.log("storage", name);
   };
 
   const onLogoutClick = () => {
