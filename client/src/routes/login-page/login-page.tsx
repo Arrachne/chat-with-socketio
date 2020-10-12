@@ -1,12 +1,6 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { RouteComponentProps } from "react-router";
-import { observer } from "mobx-react";
-import { useStore } from "store/helpers";
-import Cookies from "universal-cookie";
-
-import "routes/login-page/login-page.css";
-
-const cookies = new Cookies();
+import { Login } from "components/login";
 
 type OwnProps = {
   isAuthed: boolean;
@@ -18,81 +12,10 @@ type MatchParams = {
 
 interface IProps extends RouteComponentProps<MatchParams>, OwnProps {}
 
-export const LoginPage = observer(({ match, isAuthed }: IProps) => {
-  const store = useStore();
-
-  const { name, setName, storeRoom, setStoreRoom } = store;
-
+export const LoginPage = ({ match, isAuthed }: IProps) => {
   const { room } = match.params;
 
-  const cookieName = cookies.get("name");
-
-  useEffect(() => {
-    if (room) {
-      setStoreRoom(room);
-    }
-  }, [room, setStoreRoom]);
-
-  useEffect(() => {
-    if (cookieName) {
-      setName(cookieName);
-    }
-  }, [cookieName, setName]);
-
-  const onJoinClick = (event: any) => {
-    if (!name || !storeRoom) {
-      event.preventDefault();
-      return;
-    }
-
-    if (name) {
-      cookies.set("name", name, { path: "/" });
-    }
-  };
-
-  const onLogoutClick = () => {
-    cookies.remove("name");
-    setName("");
-  };
-
   return (
-    <div className="login__layout">
-      <div className="joinOuterContainer">
-        <div className="joinInnerContainer">
-          <h1 className="heading">Welcome to chat!</h1>
-          {isAuthed === false && (
-            <div className="no-auth-warn">{`Please log in to join room "${room}"`}</div>
-          )}
-          <div>
-            <input
-              placeholder="Name"
-              className="joinInput"
-              type="text"
-              onChange={(event) => setName(event.target.value)}
-              value={name}
-            />
-          </div>
-          <div>
-            <input
-              placeholder="Room"
-              className="joinInput mt-20"
-              type="text"
-              onChange={(event) => setStoreRoom(event.target.value)}
-              value={storeRoom}
-            />
-          </div>
-          <a onClick={onJoinClick} href={`/chat/${storeRoom}`}>
-            <button className={"button mt-20"} type="submit">
-              Join
-            </button>
-          </a>
-          {cookies.get("name") && (
-            <div className={"logout mt-20"} onClick={onLogoutClick}>
-              Log out
-            </div>
-          )}
-        </div>
-      </div>
-    </div>
+    <Login room={room} isAuthed={isAuthed}></Login>
   );
-});
+};

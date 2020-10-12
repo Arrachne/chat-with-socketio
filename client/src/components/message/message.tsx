@@ -1,9 +1,9 @@
 import React from "react";
 // @ts-ignore
 import ReactEmoji from "react-emoji";
+import { TMessage } from "types/types";
 
 import "components/message/message.css";
-import { TMessage } from "types/types";
 
 type Props = {
   message: TMessage;
